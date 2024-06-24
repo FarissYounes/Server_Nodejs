@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elasticsearch Data Count</title>
+</head>
+<body>
+    <h1>Data from Elasticsearch</h1>
+    <div id="dataCount">Loading...</div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('/data');
+                const result = await response.json();
+                const dataCountContainer = document.getElementById('dataCount');
+                dataCountContainer.textContent = `Number of records created in the last minute: ${result.count}`;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('dataCount').textContent = 'Error fetching data';
+            }
+        }
+
+        fetchData();
+    </script>
+</body>
+</html>
