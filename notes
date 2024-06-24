@@ -1,0 +1,24 @@
+npm init -y
+npm install express @elastic/elasticsearch
+
+curl -X PUT "localhost:9200/myindex" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "properties": {
+      "creation_time": {
+        "type": "date"
+      },
+      "message": {
+        "type": "text"
+      }
+    }
+  }
+}
+'
+
+curl -X POST "localhost:9200/myindex/_doc/1" -H 'Content-Type: application/json' -d'
+{
+  "creation_time": "2024-06-24T10:00:00Z",
+  "message": "Document 1"
+}
+'
