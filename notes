@@ -31,3 +31,17 @@ curl -X POST "localhost:9200/last-minute/_doc/" -H 'Content-Type: application/js
   "message": "This is a test message"
 }
 '
+curl -X POST "http://localhost:9200/_cluster/reroute" -H 'Content-Type: application/json' -d'
+{
+  "commands": [
+    {
+      "allocate_stale_primary": {
+        "index": "your_index_name",
+        "shard": shard_number,
+        "node": "target_node_name",
+        "accept_data_loss": true
+      }
+    }
+  ]
+}
+'
