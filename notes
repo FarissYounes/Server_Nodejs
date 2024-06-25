@@ -44,4 +44,12 @@ curl -X POST "http://localhost:9200/_cluster/reroute" -H 'Content-Type: applicat
     }
   ]
 }
+
+curl -X PUT "http://localhost:9200/_all/_settings" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index.allocation.max_retries": "3"
+  }
+}
+'
 '
