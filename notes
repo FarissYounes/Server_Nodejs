@@ -56,3 +56,12 @@ curl -X PUT "http://localhost:9200/_all/_settings" -H 'Content-Type: application
 docker run -d -p 9200:9200 -p 9300:9300 \
   -e "discovery.type=single-node" \
   docker.elastic.co/elasticsearch/elasticsearch:8.5.0
+
+curl -X PUT "http://localhost:9200/_cluster/settings" -H 'Content-Type: application/json' -d'
+{
+  "persistent": {
+    "cluster.routing.allocation.enable": "all"
+  }
+}
+'
+
