@@ -22,3 +22,10 @@ curl -X POST "localhost:9200/myindex/_doc/1" -H 'Content-Type: application/json'
   "message": "Document 1"
 }
 '
+
+curl -X POST "localhost:9200/last-minute/_doc/" -H 'Content-Type: application/json' -d'
+{
+  "creation_time": "2024-06-24T12:34:56Z",
+  "message": "This is a test message"
+}
+'
