@@ -65,3 +65,13 @@ curl -X PUT "http://localhost:9200/_cluster/settings" -H 'Content-Type: applicat
 }
 '
 
+    try {
+        const { body } = await client.count({
+            index: 'myindex'  // Remplacez 'myindex' par le nom de votre index
+        });
+        const count = body.count;
+        res.json({ count: count });
+    } catch (error) {
+        console.error('Error retrieving data from Elasticsearch:', error);
+        res.status(500).send('Error retrieving data from Elasticsearch');
+    }
