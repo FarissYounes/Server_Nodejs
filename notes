@@ -75,3 +75,53 @@ app.get('/count', async (req, res) => {
         console.error('Error retrieving data from Elasticsearch:', error);
         res.status(500).send('Error retrieving data from Elasticsearch');
     }
+
+const express = require('express');
+const { Client } = require('@elastic/elasticsearch');
+
+const app = express();
+const port = 3000;
+
+// Configuration du client Elasticsearch
+const client = new Client({ node: 'http://localhost:9200' });
+
+app.get('/count', async (req, res) => {
+    try {
+        // Effectue une requête count sur l'index 'myindex'
+        console.log('Sending count request to Elasticsearch...');
+        const response = await client.count({
+            index: 'myindex'  // Remplacez 'myindex' par le nom de votre index
+        });
+
+        // Log de la réponse complète pour débogage
+        console.log('Elasticsearch response:', response);
+
+        // Vérifiez si la réponse contient la propriété body
+        if (!response.body) {
+            throw new Error('No body in response from Elasticsearch');
+        }
+
+        // Extraire le count de la réponse
+        const count = response.body.count;
+        
+        // Vérification si count est défini
+        if (count === undefined) {
+            throw new Error('Count is undefined');
+        }
+
+        res.json({ count: count });
+    } catch (error) {
+        console.error('Error retrieving data from Elasticsearch:', error);
+
+        // Renvoyer une erreur plus descriptive
+        res.status(500).json({
+            message: 'Error retrieving data from Elasticsearch',
+            error: error.message,
+            stack: error.stack
+        });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
