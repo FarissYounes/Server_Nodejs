@@ -64,7 +64,7 @@ curl -X PUT "http://localhost:9200/_cluster/settings" -H 'Content-Type: applicat
   }
 }
 '
-
+app.get('/count', async (req, res) => {
     try {
         const { body } = await client.count({
             index: 'myindex'  // Remplacez 'myindex' par le nom de votre index
