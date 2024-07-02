@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Elasticsearch Data Count</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <h1>Data from Elasticsearch</h1>
@@ -23,6 +34,45 @@
         }
 
         fetchData();
+    </script>
+
+    <div>
+        <button onclick="fetchRecords('day')">Records from the last day</button>
+        <button onclick="fetchRecords('hour')">Records from the last hour</button>
+        <button onclick="fetchRecords('minute')">Records from the last minute</button>
+    </div>
+    <table id="recordsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Creation Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Records will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        async function fetchRecords(timeFrame) {
+            const response = await fetch(`/records/${timeFrame}`);
+            const records = await response.json();
+            const tableBody = document.querySelector('#recordsTable tbody');
+            tableBody.innerHTML = '';
+
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record._source.id}</td>
+                    <td>${record._source.description}</td>
+                    <td>${record._source.Priority}</td>
+                    <td>${record._source.creation_time}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
     </script>
 </body>
 </html>
