@@ -200,3 +200,23 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+/* Styling for buttons */
+.button-container {
+    text-align: center; /* Center aligns the buttons */
+    margin-top: 20px; /* Adds space above the buttons */
+}
+
+.button-container button {
+    padding: 10px 20px; /* Adds padding inside the buttons */
+    margin: 0 10px; /* Adds space between the buttons */
+    font-size: 16px; /* Sets the font size */
+    background-color: #007bff; /* Sets the background color */
+    color: #fff; /* Sets the text color */
+    border: none; /* Removes border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+}
+
+.button-container button:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+}
