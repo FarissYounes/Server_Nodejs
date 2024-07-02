@@ -125,3 +125,53 @@ app.get('/count', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
+
+////////////////
+
+// Endpoint to get records from the last day
+app.get('/records/day', async (req, res) => {
+    try {
+        const result = await getRecords('now-1d/d');
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+});
+
+// Endpoint to get records from the last hour
+app.get('/records/hour', async (req, res) => {
+    try {
+        const result = await getRecords('now-1h/h');
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+});
+
+// Endpoint to get records from the last minute
+app.get('/records/minute', async (req, res) => {
+    try {
+        const result = await getRecords('now-1m/m');
+        res.json(result);
+    } catch (error) {
+        res.status(500).send(error.toString());
+    }
+});
+
+// Function to get records based on the time range
+async function getRecords(timeRange) {
+    const { body } = await client.search({
+        index: 'web-page-info',
+        body: {
+            query: {
+                range: {
+                    creation_time: {
+                        gte: timeRange
+                    }
+                }
+            }
+        }
+    });
+    return body.hits.hits;
+}
+
