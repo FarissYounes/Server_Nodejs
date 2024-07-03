@@ -68,6 +68,41 @@ async function deleteOldDocuments(olderThan) {
     }
 }
 
+app.get('/data', async (req, res) => {
+    try {
+        const response = await client.search({
+            index: 'web-page-info',
+            body: {
+                "size": 0,
+                "aggs": {
+                    "tickets_per_hour": {
+                        "date_histogram": {
+                            "field": "creation_time",
+                            "interval": "hour",
+                            "format": "yyyy-MM-dd HH:mm:ss",
+                            "min_doc_count": 0,
+                            "extended_bounds": {
+                                "min": "now-24h/h",
+                                "max": "now/h"
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const data = response.body.aggregations.tickets_per_hour.buckets.map(bucket => ({
+            date: bucket.key_as_string,
+            count: bucket.doc_count
+        }));
+
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        res.status(500).send('Error fetching data');
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
