@@ -20,6 +20,7 @@ except Exception as e:
 
 npm init -y
 npm install express @elastic/elasticsearch
+npm install chart.js
 
 curl -X PUT "localhost:9200/myindex" -H 'Content-Type: application/json' -d'
 {
