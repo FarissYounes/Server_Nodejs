@@ -1,3 +1,20 @@
+try:
+    # Exécuter la recherche
+    search_response = es.search(index=index_name, body=search_body)
+except ElasticsearchException as e:
+    print(f"Erreur lors de la recherche: {e}")
+    return
+
+try:
+    # Supprimer le document par ID
+    delete_response = es.delete(index=index_name, id=doc_id)
+    print(f"Document avec ID {doc_id} supprimé : {delete_response['result']}")
+except NotFoundError:
+    print(f"Document avec ID {doc_id} non trouvé pour suppression.")
+except ElasticsearchException as e:
+    print(f"Erreur lors de la suppression du document ID {doc_id}: {e}")
+
+
 search_response = es.search(index=index_name, body=search_body)
 
 # Vérifier si des documents ont été trouvés
