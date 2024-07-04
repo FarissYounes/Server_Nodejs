@@ -1,3 +1,14 @@
+search_response = es.search(index=index_name, body=search_body)
+
+# Vérifier si des documents ont été trouvés
+if search_response['hits']['total']['value'] > 0:
+    for hit in search_response['hits']['hits']:
+        doc_id = hit['_id']
+        # Supprimer le document par ID
+        delete_response = es.delete(index=index_name, id=doc_id)
+        print(f"Document avec ID {doc_id} supprimé : {delete_response['result']}")
+else:
+    print("Aucun document trouvé avec cet attribut.")
 
 except exceptions.ConnectionError as e:
     print(f'Error connecting to Elasticsearch: {e}')
